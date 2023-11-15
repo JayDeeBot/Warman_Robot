@@ -1,8 +1,7 @@
-# Warman_Robot :smiley:
-## <mark>1. Testing instruction :exclamation: :exclamation:
+## <mark>1. Testing instruction :exclamation: :exclamation: 
 
-<mark>:point_right:  :pushpin: Note: Please be careful with my little shaft for the scoop... if you want the scoop to tilt down... slowly turn the pinion gear (the red small one at the motor shaft)
-### Start form here...
+<mark>:point_right:  :pushpin: Note: Please be careful with my little shaft for the scoop... if you want the scoop to tilt down... slowly turn the pinion gear (the red small one at the motor shaft). Thank you.
+### Start from here...
 :star: Upload the code to arduino (if you made any changes).
 
 :star: Unplugged the "blue cable" that you used to upload the code. :exclamation:
@@ -34,6 +33,8 @@
 ### :point_right: 5. Wire the fuse holder with the buck converter and test the battery. 
 
 ## 3. Note :notebook: 
+
+### <mark> :fire: Please be careful with my little shaft for the scoop... :fire: :fire: Thank you 
 
 ### :hear_no_evil: Do not mind about the button things ... you can remove it...
 ### :hear_no_evil: Be careful with the aligator clips of the power supply that you test, do not mess up with that.
