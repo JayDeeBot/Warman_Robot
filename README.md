@@ -8,7 +8,7 @@
 
 :star: Connect with the power from the oscilloscope.
 
-:star: Turn the power on.
+:star: Turn the power on. 11V-5A
 
 :star: When you want the robot to do the task, slowly plug the blue cable in your laptop while still keep the power supply turn on. :exclamation:
 
