@@ -1,0 +1,449 @@
+#include <SoftwareSerial.h>
+#include <Stepper.h>
+#include <Servo.h>
+
+// function declarations
+void forward_drive(); // declare function for forward drive
+void backward_drive(); // declare function for backward drive
+void right_drive(); // declare function for right drive
+void left_drive(); // declare function for left drive
+void clockwise_drive();
+void scoopForward(); // declare function to scoop forwards
+void scoopBackward(); // declare function to scoop backwards
+void liftUp(); // declare function to lift payloads
+void liftDown(); // declare function to lift payloads
+
+
+// global variable declarations:
+//Mechanum Wheels - Driver 1
+int enAWheel = 2;
+int in1Wheel = 14;
+int in2Wheel = 15; //Upper left motor
+int enBWheel = 3;
+int in3Wheel = 16;
+int in4Wheel = 17; //Upper right motor
+//Mechanum Wheels - Driver 2
+int enA_driver2Wheel = 4;
+int in1_driver2Wheel = 8;
+int in2_driver2Wheel = 9; //Down left motor
+int enB_driver2Wheel = 5;
+int in3_driver2Wheel = 10;
+int in4_driver2Wheel = 11; //Down right motor
+
+// scoop variables;
+int enALift = 44;
+int in1Lift = 46;
+int in2Lift = 48;
+// lift
+int enBScoop = 7;
+int in3Scoop = 19;
+int in4Scoop = 18;                                                                                                                                                                                                                            ;
+
+
+// release variables
+Servo servoMotor; // Create a Servo object
+int openAngle = 90; // goal angle for release gate open in degrees
+int closedAngle = 0; // goal angle for release gate closed in degrees
+
+
+void setup() {
+  // run setup functions - sets entire system for main loop
+  // setup mechanum wheels
+  // Driver1
+  pinMode(enAWheel, OUTPUT);
+  pinMode(in1Wheel, OUTPUT);
+  pinMode(in2Wheel, OUTPUT);
+  pinMode(enBWheel, OUTPUT);
+  pinMode(in3Wheel, OUTPUT);
+  pinMode(in4Wheel, OUTPUT);
+ // Driver2
+  pinMode(enA_driver2Wheel, OUTPUT);
+  pinMode(in1_driver2Wheel, OUTPUT);
+  pinMode(in2_driver2Wheel, OUTPUT);
+  pinMode(enB_driver2Wheel, OUTPUT);
+  pinMode(in3_driver2Wheel, OUTPUT);
+  pinMode(in4_driver2Wheel, OUTPUT); 
+  //lift 
+  pinMode(enALift, OUTPUT);
+  pinMode(in1Lift, OUTPUT);
+  pinMode(in2Lift, OUTPUT);
+  //Scoop
+  pinMode(enBScoop, OUTPUT);
+  pinMode(in3Scoop, OUTPUT);
+  pinMode(in4Scoop, OUTPUT);
+  // setup release
+  servoMotor.attach(45);
+  
+}
+
+void loop() {
+
+  // Drive to Payload 1
+  digitalWrite(in1Wheel, HIGH);
+  digitalWrite(in2Wheel, LOW);
+  analogWrite(enAWheel, 255);
+  digitalWrite(in3Wheel, HIGH);
+  digitalWrite(in4Wheel, LOW);
+  analogWrite(enBWheel, 255);
+
+  digitalWrite(in1_driver2Wheel, HIGH);
+  digitalWrite(in2_driver2Wheel, LOW);
+  analogWrite(enA_driver2Wheel, 255);
+  digitalWrite(in3_driver2Wheel, HIGH);
+  digitalWrite(in4_driver2Wheel, LOW);
+  analogWrite(enB_driver2Wheel, 255);
+
+  delay(250);
+  //wheels off
+
+  digitalWrite(in1Wheel, HIGH);
+  digitalWrite(in2Wheel, LOW);
+  analogWrite(enAWheel, 0);
+  digitalWrite(in3Wheel, HIGH);
+  digitalWrite(in4Wheel, LOW);
+  analogWrite(enBWheel, 0);
+
+  digitalWrite(in1_driver2Wheel, HIGH);
+  digitalWrite(in2_driver2Wheel, LOW);
+  analogWrite(enA_driver2Wheel, 0);
+  digitalWrite(in3_driver2Wheel, HIGH);
+  digitalWrite(in4_driver2Wheel, LOW);
+  analogWrite(enB_driver2Wheel, 0);
+
+  delay(1000);
+
+  //Scoop payload 1
+  
+  digitalWrite(in3Scoop, HIGH);
+  digitalWrite(in4Scoop, LOW);
+  analogWrite(enBScoop, 130);
+  delay(1700);
+
+  digitalWrite(in3Scoop, HIGH);
+  digitalWrite(in4Scoop, LOW);
+  analogWrite(enBScoop, 0);
+  delay(1000);
+
+  //release Scoop
+
+  digitalWrite(in3Scoop, LOW);
+  digitalWrite(in4Scoop, HIGH);
+  analogWrite(enBScoop, 130);
+  delay(1000);
+
+  digitalWrite(in3Scoop, LOW);
+  digitalWrite(in4Scoop, HIGH);
+  analogWrite(enBScoop, 0);
+  delay(1000);
+
+  // drive to silo 1
+  digitalWrite(in1Wheel, LOW);
+  digitalWrite(in2Wheel, HIGH);
+  analogWrite(enAWheel, 255);
+  digitalWrite(in3Wheel, LOW);
+  digitalWrite(in4Wheel, HIGH);
+  analogWrite(enBWheel, 255);
+
+  digitalWrite(in1_driver2Wheel, LOW);
+  digitalWrite(in2_driver2Wheel, HIGH);
+  analogWrite(enA_driver2Wheel, 255);
+  digitalWrite(in3_driver2Wheel, LOW);
+  digitalWrite(in4_driver2Wheel, HIGH);
+  analogWrite(enB_driver2Wheel, 255);
+
+  delay(150);
+  //wheels off
+
+  digitalWrite(in1Wheel, HIGH);
+  digitalWrite(in2Wheel, LOW);
+  analogWrite(enAWheel, 0);
+  digitalWrite(in3Wheel, HIGH);
+  digitalWrite(in4Wheel, LOW);
+  analogWrite(enBWheel, 0);
+
+  digitalWrite(in1_driver2Wheel, HIGH);
+  digitalWrite(in2_driver2Wheel, LOW);
+  analogWrite(enA_driver2Wheel, 0);
+  digitalWrite(in3_driver2Wheel, HIGH);
+  digitalWrite(in4_driver2Wheel, LOW);
+  analogWrite(enB_driver2Wheel, 0);
+
+  delay(1000);
+
+  // Lift Up
+ 
+  
+  digitalWrite(in1Lift, HIGH);
+  digitalWrite(in2Lift, LOW);
+  analogWrite(enALift, 255);
+  delay(15000);
+
+ //lift off
+  digitalWrite(in1Lift, HIGH);
+  digitalWrite(in2Lift, LOW);
+  analogWrite(enALift, 0);
+  servoMotor.write(180);
+  delay(1000);
+
+  // Lift Down
+  digitalWrite(in1Lift, LOW);
+  digitalWrite(in2Lift, HIGH);
+  analogWrite(enALift, 255);
+  delay(12000);
+
+    // Lift off
+  digitalWrite(in1Lift, LOW);
+  digitalWrite(in2Lift, HIGH);
+  analogWrite(enALift, 0);
+  delay(1000);
+
+  
+  // reverse home stop here for squash ball attempt only
+  digitalWrite(in1Wheel, LOW);
+  digitalWrite(in2Wheel, HIGH);
+  analogWrite(enAWheel, 255);
+  digitalWrite(in3Wheel, LOW);
+  digitalWrite(in4Wheel, HIGH);
+  analogWrite(enBWheel, 255);
+
+  digitalWrite(in1_driver2Wheel, LOW);
+  digitalWrite(in2_driver2Wheel, HIGH);
+  analogWrite(enA_driver2Wheel, 255);
+  digitalWrite(in3_driver2Wheel, LOW);
+  digitalWrite(in4_driver2Wheel, HIGH);
+  analogWrite(enB_driver2Wheel, 255);
+
+  delay(150);
+  
+  //wheels off
+
+  digitalWrite(in1Wheel, HIGH);
+  digitalWrite(in2Wheel, LOW);
+  analogWrite(enAWheel, 0);
+  digitalWrite(in3Wheel, HIGH);
+  digitalWrite(in4Wheel, LOW);
+  analogWrite(enBWheel, 0);
+
+  digitalWrite(in1_driver2Wheel, HIGH);
+  digitalWrite(in2_driver2Wheel, LOW);
+  analogWrite(enA_driver2Wheel, 0);
+  digitalWrite(in3_driver2Wheel, HIGH);
+  digitalWrite(in4_driver2Wheel, LOW);
+  analogWrite(enB_driver2Wheel, 0);
+
+  delay(1000);
+  //close gate
+  servoMotor.write(20);
+
+   //release Scoop further
+
+  digitalWrite(in3Scoop, LOW);
+  digitalWrite(in4Scoop, HIGH);
+  analogWrite(enBScoop, 130);
+  delay(300);
+  //stop scoop motor
+  digitalWrite(in3Scoop, LOW);
+  digitalWrite(in4Scoop, HIGH);
+  analogWrite(enBScoop, 0);
+  delay(1000);
+
+  // anti clockwise turn 90 deg
+  digitalWrite(in1Wheel, HIGH);
+  digitalWrite(in2Wheel, LOW);
+  analogWrite(enAWheel, 130);
+  digitalWrite(in3Wheel, HIGH);
+  digitalWrite(in4Wheel, LOW);
+  analogWrite(enBWheel, 130);
+
+  digitalWrite(in1_driver2Wheel, LOW);
+  digitalWrite(in2_driver2Wheel, HIGH);
+  analogWrite(enA_driver2Wheel, 130);
+  digitalWrite(in3_driver2Wheel, LOW);
+  digitalWrite(in4_driver2Wheel, HIGH);
+  analogWrite(enB_driver2Wheel, 130);
+
+  delay(1000);
+  //wheels off
+  digitalWrite(in1Wheel, HIGH);
+  digitalWrite(in2Wheel, LOW);
+  analogWrite(enAWheel, 0);
+  digitalWrite(in3Wheel, HIGH);
+  digitalWrite(in4Wheel, LOW);
+  analogWrite(enBWheel, 0);
+
+  digitalWrite(in1_driver2Wheel, LOW);
+  digitalWrite(in2_driver2Wheel, HIGH);
+  analogWrite(enA_driver2Wheel, 0);
+  digitalWrite(in3_driver2Wheel, LOW);
+  digitalWrite(in4_driver2Wheel, HIGH);
+  analogWrite(enB_driver2Wheel, 0);
+  delay(1000);
+
+    // Drive to Payload 2
+  digitalWrite(in1Wheel, HIGH);
+  digitalWrite(in2Wheel, LOW);
+  analogWrite(enAWheel, 130);
+  digitalWrite(in3Wheel, HIGH);
+  digitalWrite(in4Wheel, LOW);
+  analogWrite(enBWheel, 130);
+
+  digitalWrite(in1_driver2Wheel, HIGH);
+  digitalWrite(in2_driver2Wheel, LOW);
+  analogWrite(enA_driver2Wheel, 130);
+  digitalWrite(in3_driver2Wheel, HIGH);
+  digitalWrite(in4_driver2Wheel, LOW);
+  analogWrite(enB_driver2Wheel, 130);
+
+  delay(500);
+  //wheels off
+
+  digitalWrite(in1Wheel, HIGH);
+  digitalWrite(in2Wheel, LOW);
+  analogWrite(enAWheel, 0);
+  digitalWrite(in3Wheel, HIGH);
+  digitalWrite(in4Wheel, LOW);
+  analogWrite(enBWheel, 0);
+
+  digitalWrite(in1_driver2Wheel, HIGH);
+  digitalWrite(in2_driver2Wheel, LOW);
+  analogWrite(enA_driver2Wheel, 0);
+  digitalWrite(in3_driver2Wheel, HIGH);
+  digitalWrite(in4_driver2Wheel, LOW);
+  analogWrite(enB_driver2Wheel, 0);
+
+  delay(1000);
+
+  
+  
+}
+
+
+void forward_drive(int time_driving, int speed_driving){
+
+  digitalWrite(in1Wheel, HIGH);
+  digitalWrite(in2Wheel, LOW);
+  analogWrite(enAWheel, speed_driving);
+  digitalWrite(in3Wheel, HIGH);
+  digitalWrite(in4Wheel, LOW);
+  analogWrite(enBWheel, speed_driving);
+
+  digitalWrite(in1_driver2Wheel, HIGH);
+  digitalWrite(in2_driver2Wheel, LOW);
+  analogWrite(enA_driver2Wheel, speed_driving);
+  digitalWrite(in3_driver2Wheel, HIGH);
+  digitalWrite(in4_driver2Wheel, LOW);
+  analogWrite(enB_driver2Wheel, speed_driving);
+  //delay a little bit
+  delay(time_driving);
+}
+void backward_drive(int time_driving, int speed_driving)
+{
+  digitalWrite(in1Wheel, LOW);
+  digitalWrite(in2Wheel, HIGH);
+  analogWrite(enAWheel, speed_driving);
+  digitalWrite(in3Wheel, LOW);
+  digitalWrite(in4Wheel, HIGH);
+  analogWrite(enBWheel, speed_driving);
+//for driver 2
+  digitalWrite(in2_driver2Wheel, HIGH);
+  digitalWrite(in1_driver2Wheel, LOW);
+  analogWrite(enA_driver2Wheel, speed_driving);
+  digitalWrite(in4_driver2Wheel, HIGH);
+  digitalWrite(in3_driver2Wheel, LOW);
+  analogWrite(enB_driver2Wheel, speed_driving);
+  delay(time_driving);
+}
+void right_drive(int time_driving, int speed_driving){
+  //For driver 1 
+  digitalWrite(in1Wheel, LOW);
+  digitalWrite(in2Wheel, HIGH);
+  analogWrite(enAWheel, speed_driving);
+  delay(time_driving);
+  digitalWrite(in3Wheel, HIGH);
+  digitalWrite(in4Wheel, LOW);
+  analogWrite(enBWheel, speed_driving);
+  delay(time_driving);
+   //For driver 2
+  digitalWrite(in1_driver2Wheel, HIGH);
+  digitalWrite(in2_driver2Wheel, LOW);
+  analogWrite(enA_driver2Wheel, speed_driving);
+  delay(time_driving);
+  digitalWrite(in3_driver2Wheel, LOW);
+  digitalWrite(in4_driver2Wheel, HIGH);
+  analogWrite(enB_driver2Wheel, speed_driving);
+  delay(time_driving);
+}
+
+void left_drive(int time_driving, int speed_driving){
+
+   //For driver 1
+  digitalWrite(in1Wheel, HIGH);
+  digitalWrite(in2Wheel, LOW);
+  analogWrite(enAWheel, speed_driving);
+  digitalWrite(in3Wheel, LOW);
+  digitalWrite(in4Wheel, HIGH);
+  analogWrite(enBWheel, speed_driving);
+
+   //For driver 2
+  digitalWrite(in1_driver2Wheel, LOW);
+  digitalWrite(in2_driver2Wheel, HIGH);
+  analogWrite(enA_driver2Wheel, speed_driving);
+  digitalWrite(in3_driver2Wheel, HIGH);
+  digitalWrite(in4_driver2Wheel, LOW);
+  analogWrite(enB_driver2Wheel, speed_driving);
+  delay(time_driving);
+
+}
+
+void scoopForward(int time_driving, int speed_driving) // define payload scooping function
+{
+  // scoop payloads
+  digitalWrite(in3Scoop, LOW);
+  digitalWrite(in4Scoop, HIGH);
+  analogWrite(enBScoop, speed_driving);
+  delay(time_driving);
+}
+
+void scoopBackward(int time_driving, int speed_driving){
+  digitalWrite(in3Scoop, LOW);
+  digitalWrite(in4Scoop, HIGH);
+  analogWrite(enBScoop, speed_driving);
+  delay(time_driving);
+}
+
+void liftUp(int time, int speed) // define payload lifting function
+{
+  // lift payloads
+
+  digitalWrite(in1Lift, HIGH);
+  digitalWrite(in2Lift, LOW);
+  analogWrite(enALift, speed);
+  delay(time);
+}
+void liftDown(int time, int speed) // define payload lifting function
+{
+  // move downward
+  digitalWrite(in1Lift, LOW);
+  digitalWrite(in2Lift, HIGH);
+  analogWrite(enALift, speed);
+  delay(time);
+  
+}
+
+void clockwise_drive(int time_driving, int speed_driving){
+  //For driver 1 
+  digitalWrite(in1Wheel, HIGH);
+  digitalWrite(in2Wheel, LOW);
+  analogWrite(enAWheel, speed_driving);
+  digitalWrite(in3Wheel, LOW);
+  digitalWrite(in4Wheel, HIGH);
+  analogWrite(enBWheel, speed_driving);
+   //For driver 2
+  digitalWrite(in1_driver2Wheel, HIGH);
+  digitalWrite(in2_driver2Wheel, LOW);
+  analogWrite(enA_driver2Wheel, speed_driving);
+  digitalWrite(in3_driver2Wheel, LOW);
+  digitalWrite(in4_driver2Wheel, HIGH);
+  analogWrite(enB_driver2Wheel, speed_driving);
+  delay(time_driving);
+}
